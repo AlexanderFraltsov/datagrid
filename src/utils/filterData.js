@@ -1,4 +1,4 @@
-const filterData = (filters, data, cols) => {
+const filterData = (filters, data, columns) => {
   const {onlyActive, eyeColor, queryString} = filters;
   const filteredData = data
     .filter((row) => {
@@ -12,8 +12,8 @@ const filterData = (filters, data, cols) => {
     .filter((row) => {
       if (queryString.length === 0) return true;
 
-      const result = cols
-        .map(col => row[col.name])
+      const result = columns
+        .map(column => row[column.name])
         .some(
           cell => `${cell}`.toLowerCase().includes(queryString)
         );

@@ -1,4 +1,4 @@
-export const sort = () => ({ type: 'sort' });
+export const setSortValues = () => ({ type: 'SET_SORT_VALUES' });
 
 export const checkActive = () => ({ type: 'CHECK_ACTIVE' });
 
