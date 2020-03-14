@@ -1,88 +1,83 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { compose } from '../../utils';
 import { withMyService } from '../hoc';
 import TableView from './table-view';
+import ErrorIndicator from '../error-indicator';
 
-const useRequest = (request) => {
-  const initialState = useMemo(() => ({
-    data: null,
+import * as actions from '../../actions';
+import Spinner from '../spinner';
+
+class Table extends Component {
+
+  state = {
+    error: false,
     loading: true,
-    error: null
-  }), []);
-
-  const [dataState, setDataState] = useState(initialState);
-
-  useEffect(() => {
-    setDataState(initialState);
-    let cancelled = false;
-    request()
-      .then(data => !cancelled && setDataState({
-        data,
-        loading: false,
-        error: null
-      }))
-      .catch(error => !cancelled && setDataState({
-        data: null,
-        loading: false,
-        error
-      }))
-    return () => cancelled = true;
-  }, [request, initialState]);
-
-  return dataState;
-};
-
-const getData = (promise) => {
-  return promise.then(data => data);
-};
-
-const useTableData = ({getAllPeople}) => {
-  const promise = getAllPeople();
-  const request = useCallback(
-    () => getData(promise), [promise]);
-  return useRequest(request);
-};
-
-const Table = ({ myService, eyeColor, onlyActive }) => {
-
-  const { data, loading, error } = useTableData(myService);
-
-  if (error) {
-    return <div>Error</div>
   }
 
-  if (loading) {
-    return <div>Loading</div>
-  }
+  componentDidMount() {
+    if (this.props.data !== null) {
+      this.setState({loading: false});
+      return;
+    };
+    this.props.myService.getAllPeople()
+      .then(data => {
+        this.props.setDataStore(data);
+        this.setState({loading: false})
+      })
+      .catch(error => this.setState({
+        error,
+        loading: false
+      }));
+  };
 
-  data.length = 20;
+  render () {
+    const { eyeColor, onlyActive, queryString, data } = this.props;
+    const { loading, error } = this.state;
 
-  const filteredData = data
-    .filter((row) => {
-      if (onlyActive) { return row.isActive }
-      return true;
-    })
-    .filter((row) => {
-      if (eyeColor.length===0) return true;
-      return eyeColor.includes(row.eyeColor);
-    })
+    if (error) {
+      return <ErrorIndicator />
+    }
 
-  return (
-    <TableView data={filteredData}/>
-  )
-};
+    if (loading) {
+      return <Spinner />
+    }
+
+    const filteredData = data
+      .filter((row) => {
+        if (onlyActive) { return row.isActive }
+        return true;
+      })
+      .filter((row) => {
+        if (eyeColor.length === 0) return true;
+        return eyeColor.includes(row.eyeColor);
+      })
+      .filter((row) => {
+        if (queryString.length === 0) return true;
+        const {balance, age, eyeColor, name, phone, registered} = row;
+        const result = [balance, age, eyeColor, name, phone, registered].some(
+          el => `${el}`.toLowerCase().includes(queryString)
+        );
+        return result;
+      })
+
+    return (
+      <TableView data={filteredData}/>
+    )
+  };
+}
 
 const mapStateToProps = (state) => {
   return {
     onlyActive: state.onlyActive,
-    eyeColor: state.eyeColor
+    eyeColor: state.eyeColor,
+    queryString: state.queryString,
+    data: state.dataStore
   }
 };
 
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, actions),
   withMyService
 )(Table);
-
