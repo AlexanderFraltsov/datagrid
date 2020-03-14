@@ -1,33 +1,11 @@
 import React, { useEffect, useRef, useState} from 'react';
 import { FixedSizeList as List } from 'react-window';
-import { CheckCircleRounded, NotInterested } from '@material-ui/icons';
 import TableHeader from '../table-header';
+import TableRow from '../table-row';
+
 import './table.css';
 
-const TableCell = ({content}) => {
-  if (typeof content === 'boolean') {
-    const icon = content ?
-      <CheckCircleRounded color='primary' /> :
-      <NotInterested color='error' />
-    return <div key={`${content}`} className='table--cell'>{icon}</div>
-  }
-  return <div key={content} className='table--cell'>{content}</div>
-};
-
-const TableRow = ({row, cols, style}) => {
-  const {id} = row;
-
-  const tableCells = cols
-    .map(col => row[col.name])
-    .map(cell => <TableCell key={`${id}+${cell}`} content={cell}/>);
-  return (
-    <div key={id} className='table--row' style={style}>
-      {tableCells}
-    </div>
-  );
-};
-
-const TableView = ({data, isVirtualization, cols}) => {
+const TableView = ({data, isVirtualization, columns}) => {
 
   const [isSticky, setSticky] = useState(false);
   const ref = useRef(null);
@@ -42,16 +20,16 @@ const TableView = ({data, isVirtualization, cols}) => {
     };
   }, []);
 
-  const tableData = data.map((row) => <TableRow row={row} cols={cols}/>);
+  const tableData = data.map((row) => <TableRow key={row.id} row={row} columns={columns}/>);
 
   const Row = ({ index, style }) => {
     const row = data[index];
     return (
-      <TableRow row={row} style={style} cols={cols}/>
+      <TableRow key={row} row={row} style={style} columns={columns}/>
     );
   };
 
-  const labels = cols.map(col => col.label);
+  const labels = columns.map(col => col.label);
 
   return (
     <div className='table'>

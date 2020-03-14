@@ -24,7 +24,7 @@ const ControlPanel = ({
     eyeColor,
     queryString,
   },
-  cols,
+  columns,
   checkActive,
   chooseEyeColor,
   setQueryString,
@@ -50,7 +50,7 @@ const ControlPanel = ({
         color='secondary'
         value={queryString}
         onChange={e => {setQueryString(e.target.value)}} />
-      <ColumnList className='visible' cols={cols} onToggle={toggleColumn}/>
+      <ColumnList className='visible' columns={columns} onToggle={toggleColumn}/>
       <SwitchButton
         value={isVirtualization}
         label='Toggle virtualization'
@@ -62,7 +62,7 @@ const ControlPanel = ({
 const mapStateToProps = (state) => {
   return {
     filters: state.filters,
-    cols: state.cols,
+    columns: state.columns,
     isVirtualization: state.isVirtualization
   }
 };

@@ -20,9 +20,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ColumnList = ({cols, onToggle}) => {
+const ColumnList = ({columns, onToggle}) => {
   const classes = useStyles();
-  const togglers = cols.map((col, index) => {
+  const togglers = columns.map((col, index) => {
     const {label, visible} = col;
     const color=visible? 'primary': 'secondary';
     return (

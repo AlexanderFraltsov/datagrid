@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { compose, filterData } from '../../utils';
+import { compose, filterData, sortData } from '../../utils';
 import { withMyService } from '../hoc';
 import TableView from './table-view';
 import ErrorIndicator from '../error-indicator';
@@ -33,7 +33,7 @@ class Table extends Component {
   };
 
   render () {
-    const { data, filters, cols, isVirtualization } = this.props;
+    const { data, filters, sort, columns, isVirtualization } = this.props;
     const { loading, error } = this.state;
 
     if (error) {
@@ -44,11 +44,12 @@ class Table extends Component {
       return <Spinner />
     }
 
-    const filteredData = filterData(filters, data, cols);
-    const visibleCols = cols.filter(col => col.visible);
+    const filteredData = filterData(filters, data, columns);
+    const sortedData = sortData(sort, filteredData);
+    const visibleCols = columns.filter(column => column.visible);
 
     return (
-      <TableView data={filteredData} cols={visibleCols} isVirtualization={isVirtualization}/>
+      <TableView data={sortedData} columns={visibleCols} isVirtualization={isVirtualization}/>
     )
   };
 }
@@ -56,9 +57,10 @@ class Table extends Component {
 const mapStateToProps = (state) => {
   return {
     filters: state.filters,
+    sort: state.sort,
     data: state.dataStore,
-    cols: state.cols,
-    isVirtualization: state.isVirtualization
+    columns: state.columns,
+    isVirtualization: state.isVirtualization,
   }
 };
 
