@@ -57,6 +57,7 @@
 .sticky {
   position: sticky;
   top: 0;
+  z-index: 100;
 }
 
 .sticky-wrapper {
@@ -66,6 +67,6 @@
 .sticky .sticky-inner {
   position: fixed;
   top: 0;
-  left: calc(5% - 8px);
+  left: calc(5vw - 16px/2);
   right: 0;
 }

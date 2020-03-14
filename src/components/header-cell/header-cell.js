@@ -2,11 +2,11 @@ import React from 'react';
 import { IconButton } from '@material-ui/core';
 import { ArrowDropUp, ArrowDropDown } from '@material-ui/icons';
 
-const HeaderCell = ({content}) => {
+const HeaderCell = ({label}) => {
   const onArrowClick = (e)=>{const elem = e.target.closest('.table--btn'); elem.classList.toggle('active'); }
   return (
     <div className='table--cell'>
-      {content}
+      {label}
       <div className='arrows'>
         <IconButton size='small' className='table--btn' onClick={onArrowClick}>
           <ArrowDropUp />

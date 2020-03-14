@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState} from 'react';
-import { connect } from 'react-redux';
 import { FixedSizeList as List } from 'react-window';
 import { CheckCircleRounded, NotInterested } from '@material-ui/icons';
 import TableHeader from '../table-header';
@@ -15,10 +14,12 @@ const TableCell = ({content}) => {
   return <div key={content} className='table--cell'>{content}</div>
 };
 
-const TableRow = ({row, style}) => {
-  const {id, name, age, eyeColor, phone, isActive, balance, registered} = row;
-  const _cells = [name, age, eyeColor, phone, isActive, balance, registered];
-  const tableCells = _cells.map((cell) => <TableCell key={cell} content={cell}/>);
+const TableRow = ({row, cols, style}) => {
+  const {id} = row;
+
+  const tableCells = cols
+    .map(col => row[col.name])
+    .map(cell => <TableCell key={`${id}+${cell}`} content={cell}/>);
   return (
     <div key={id} className='table--row' style={style}>
       {tableCells}
@@ -26,7 +27,7 @@ const TableRow = ({row, style}) => {
   );
 };
 
-const TableView = ({data, isVirtualization}) => {
+const TableView = ({data, isVirtualization, cols}) => {
 
   const [isSticky, setSticky] = useState(false);
   const ref = useRef(null);
@@ -41,24 +42,26 @@ const TableView = ({data, isVirtualization}) => {
     };
   }, []);
 
-  const tableData = data.map((row) => <TableRow row={row}/>);
+  const tableData = data.map((row) => <TableRow row={row} cols={cols}/>);
 
   const Row = ({ index, style }) => {
     const row = data[index];
     return (
-      <TableRow row={row} style={style}/>
-    )
-  }
+      <TableRow row={row} style={style} cols={cols}/>
+    );
+  };
+
+  const labels = cols.map(col => col.label);
 
   return (
     <div className='table'>
       <div className={`sticky-wrapper${isSticky ? ' sticky' : ''}`} ref={ref}>
-        <TableHeader />
+        <TableHeader labels={labels}/>
       </div>
       {
         isVirtualization ? (
           <List
-            height={800}
+            height={600}
             itemCount={data.length}
             itemSize={50}
             width={'90vw'}
@@ -76,10 +79,4 @@ const TableView = ({data, isVirtualization}) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isVirtualization: state.isVirtualization
-  }
-};
-
-export default connect(mapStateToProps)(TableView);
+export default TableView;

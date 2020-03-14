@@ -23,4 +23,11 @@ export const setQueryString = (queryString) => {
   }
 };
 
+export const toggleColumn = (column) => {
+  return {
+    type: 'TOGGLE_COLUMN',
+    payload: column
+  }
+};
+
 export const toggleVirtualization = () => ({ type: 'TOGGLE_VIRTUALIZATION'});

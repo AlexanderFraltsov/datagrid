@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { compose } from '../../utils';
+import { compose, filterData } from '../../utils';
 import { withMyService } from '../hoc';
 import TableView from './table-view';
 import ErrorIndicator from '../error-indicator';
@@ -33,7 +33,7 @@ class Table extends Component {
   };
 
   render () {
-    const { eyeColor, onlyActive, queryString, data } = this.props;
+    const { data, filters, cols, isVirtualization } = this.props;
     const { loading, error } = this.state;
 
     if (error) {
@@ -44,36 +44,21 @@ class Table extends Component {
       return <Spinner />
     }
 
-    const filteredData = data
-      .filter((row) => {
-        if (onlyActive) { return row.isActive }
-        return true;
-      })
-      .filter((row) => {
-        if (eyeColor.length === 0) return true;
-        return eyeColor.includes(row.eyeColor);
-      })
-      .filter((row) => {
-        if (queryString.length === 0) return true;
-        const {balance, age, eyeColor, name, phone, registered} = row;
-        const result = [balance, age, eyeColor, name, phone, registered].some(
-          el => `${el}`.toLowerCase().includes(queryString)
-        );
-        return result;
-      })
+    const filteredData = filterData(filters, data, cols);
+    const visibleCols = cols.filter(col => col.visible);
 
     return (
-      <TableView data={filteredData}/>
+      <TableView data={filteredData} cols={visibleCols} isVirtualization={isVirtualization}/>
     )
   };
 }
 
 const mapStateToProps = (state) => {
   return {
-    onlyActive: state.onlyActive,
-    eyeColor: state.eyeColor,
-    queryString: state.queryString,
-    data: state.dataStore
+    filters: state.filters,
+    data: state.dataStore,
+    cols: state.cols,
+    isVirtualization: state.isVirtualization
   }
 };
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import HeaderCell from '../header-cell';
 
-const TableHeader = () => {
+const TableHeader = ({labels}) => {
 
-  const _headers = ['Name', 'Age', 'Eye Color', 'Phone', 'Is Active', 'Balance', 'Registered'];
-  const tableHeaders = _headers.map((header) => <HeaderCell key={header} content={header}/>);
+  const tableHeaders = labels.map((label) => <HeaderCell key={label} label={label}/>);
 
   return (
     <div className='table--header sticky-inner'>
