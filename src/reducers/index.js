@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
         dataStore: action.payload
       };
     case 'SET_SORT_VALUES':
-      return state;
+      return updateSort(state, action.payload);
     case 'TOGGLE_COLUMN':
       return updateColumnsVisible(state, action.payload);
     case 'TOGGLE_VIRTUALIZATION':
@@ -61,6 +61,16 @@ const updateFilters = (state, item, value) => {
   return {
     ...state,
     filters
+  };
+};
+
+const updateSort = (state, value) => {
+  const sort = value;
+
+  localStorage.setItem('Sort', JSON.stringify(sort));
+  return {
+    ...state,
+    sort
   };
 };
 

@@ -29,12 +29,10 @@ const TableView = ({data, isVirtualization, columns}) => {
     );
   };
 
-  const labels = columns.map(col => col.label);
-
   return (
     <div className='table'>
       <div className={`sticky-wrapper${isSticky ? ' sticky' : ''}`} ref={ref}>
-        <TableHeader labels={labels}/>
+        <TableHeader columns={columns} />
       </div>
       {
         isVirtualization ? (

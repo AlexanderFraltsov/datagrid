@@ -1,22 +1,42 @@
 import React from 'react';
-import { IconButton } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { setSortValues } from '../../actions';
+
 import { ArrowDropUp, ArrowDropDown } from '@material-ui/icons';
 
-const HeaderCell = ({label}) => {
-  const onArrowClick = (e)=>{const elem = e.target.closest('.table--btn'); elem.classList.toggle('active'); }
+const HeaderCell = ({label, name, dataType, sort, setSortValues}) => {
+
+  const idx = sort.findIndex(el => el.name === name);
+  const direction = sort[idx] ? sort[idx].isSortDirectionToDown : null;
+
+  const onHeaderCellClick = (e) => {
+    const isSortDirectionToDown = (idx === -1) ? true : !sort[idx].isSortDirectionToDown;
+    const item = {name, dataType, isSortDirectionToDown};
+    const arr = [item]
+    console.log(arr);
+    setSortValues(arr);
+  }
   return (
-    <div className='table--cell'>
+    <div className='table--cell' onClick={onHeaderCellClick}>
       {label}
-      <div className='arrows'>
-        <IconButton size='small' className='table--btn' onClick={onArrowClick}>
-          <ArrowDropUp />
-        </IconButton>
-        <IconButton size='small' className='table--btn' onClick={onArrowClick}>
-          <ArrowDropDown />
-        </IconButton>
-      </div>
+      {
+        direction ?
+        <ArrowDropDown /> :
+        (typeof direction === 'boolean') && <ArrowDropUp />
+      }
     </div>
   )
 }
 
-export default HeaderCell;
+
+const mapStateToProps = (state) => {
+  return {
+    sort: state.sort
+  }
+};
+
+const mapDispatchToProps = {
+  setSortValues
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderCell);
