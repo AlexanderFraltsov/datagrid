@@ -22,8 +22,13 @@
   align-items: center;
 }
 
-.table--body .table--row:hover {
+.table--body .table--row:hover,
+.table--body .table--row.active:hover {
   background-color: burlywood;
+}
+
+.table--body .table--row.active {
+  background-color: lightgrey;
 }
 
 .table--cell {
@@ -42,7 +47,7 @@
   visibility: visible;
 }
 
-.table--header:hover .table--btn {
+.table--row:hover .table--btn {
   visibility: visible;
 }
 .table--header .table--cell{

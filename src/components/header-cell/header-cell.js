@@ -28,21 +28,21 @@ const HeaderCell = ({label, name, dataType, sort, setSortValues}) => {
       arr=[item];
     }
     setSortValues(arr);
-  }
+  };
 
   return (
     <div className='table--cell' onClick={onHeaderCellClick}>
-      <Typography
-        variant='caption'
-        color='secondary' >
-        {idx !== -1 && sort.length > 1 ? idx + 1 : null}
-      </Typography>
       {label}
       {
         direction ?
         <ArrowDropUp /> :
         (typeof direction === 'boolean') && <ArrowDropDown />
       }
+      <Typography
+        variant='caption'
+        color='secondary' >
+        {idx !== -1 && sort.length > 1 ? idx + 1 : null}
+      </Typography>
     </div>
   )
 }

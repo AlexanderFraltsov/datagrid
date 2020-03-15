@@ -20,12 +20,12 @@ const TableView = ({data, isVirtualization, columns}) => {
     };
   }, []);
 
-  const tableData = data.map((row) => <TableRow key={row.id} row={row} columns={columns}/>);
+  const tableData = data.map((row, index) => <TableRow key={row.id} index={index} row={row} columns={columns}/>);
 
   const Row = ({ index, style }) => {
     const row = data[index];
     return (
-      <TableRow key={row} row={row} style={style} columns={columns}/>
+      <TableRow key={row} index={index} row={row} style={style} columns={columns}/>
     );
   };
 

@@ -18,6 +18,7 @@ const initialState = {
   ],
   dataStore: null,
   isVirtualization: true,
+  checkedRows: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,6 +35,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         dataStore: action.payload
       };
+    case 'CHECK_ROW':
+      return {
+        ...state,
+        checkedRows: action.payload
+      };
     case 'SET_SORT_VALUES':
       return updateSort(state, action.payload);
     case 'TOGGLE_COLUMN':
@@ -47,8 +53,6 @@ const reducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default reducer;
 
 const updateFilters = (state, item, value) => {
   const filters = {
@@ -85,3 +89,5 @@ const updateColumnsVisible = (state, item) => {
     columns: newColumns
   };
 };
+
+export default reducer;
