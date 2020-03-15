@@ -4,9 +4,8 @@ const initialState = {
     eyeColor: [],
     queryString: '',
   },
-  sort: [
-    {name: 'age', isSortDirectionToDown: true, dataType: 'number' },
-    {name: 'registered', isSortDirectionToDown: false, dataType: 'date' },
+  sort: JSON.parse(localStorage.getItem('Sort')) || [
+    {name: 'name', isSortDirectionToDown: true, dataType: 'string' }
   ],
   columns: JSON.parse(localStorage.getItem('Columns')) || [
     { label: 'Name' , name: 'name', visible: true, dataType: 'string' },
