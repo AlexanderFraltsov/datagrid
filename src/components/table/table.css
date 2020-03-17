@@ -1,0 +1,77 @@
+.table {
+  user-select: none;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.table--body,
+.table--header {
+  width: 90vw;
+}
+
+.table--header {
+  background-color: khaki;
+}
+
+.table--row {
+  min-height: 50px;
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid black;
+  align-items: center;
+}
+
+.table--body .table--row:hover,
+.table--body .table--row.active:hover {
+  background-color: burlywood;
+}
+
+.table--body .table--row.active {
+  background-color: lightgrey;
+}
+
+.table--cell {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+}
+
+.table .table--btn {
+  visibility: hidden;
+}
+
+.table .table--btn.active {
+  visibility: visible;
+}
+
+.table--row:hover .table--btn {
+  visibility: visible;
+}
+.table--header .table--cell{
+  flex-wrap: wrap;
+}
+
+.arrows {
+  display: flex;
+  flex-flow: column;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.sticky-wrapper {
+  position: relative;
+}
+
+.sticky .sticky-inner {
+  position: fixed;
+  top: 0;
+  left: calc(5vw - 16px/2);
+  right: 0;
+}

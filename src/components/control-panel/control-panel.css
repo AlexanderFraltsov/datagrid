@@ -1,0 +1,6 @@
+.control_panel .aside {
+  position: absolute;
+  left: 0;
+  top: 50vh;
+  background-color: lightsalmon;
+}
