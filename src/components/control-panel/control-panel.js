@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 
 import {
   TextField,
-  Box
+  Box,
+  IconButton
 } from '@material-ui/core';
+
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import SwitchButton from '../switch-button';
 import InputSelect from '../input-select';
 import ColumnList from '../column-list';
 
-import {
-  checkActive,
-  chooseEyeColor,
-  setQueryString,
-  toggleVirtualization,
-  toggleColumn
-} from '../../actions';
+import * as actions from '../../actions';
+
+import './control-panel.css';
 
 const ControlPanel = ({
   filters: {
@@ -25,15 +24,18 @@ const ControlPanel = ({
     queryString,
   },
   columns,
+  checkedRows,
+  isVirtualization,
   checkActive,
   chooseEyeColor,
   setQueryString,
   toggleVirtualization,
-  isVirtualization,
-  toggleColumn
+  toggleColumn,
+  removeRows,
+  checkRow
 }) => {
   return (
-    <Box display='flex' alignItems='center' justifyContent='center' minHeight='100px'>
+    <Box display='flex' alignItems='center' justifyContent='center' minHeight='100px' className='control_panel'>
       <SwitchButton
         value={onlyActive}
         label='Only active users'
@@ -55,24 +57,27 @@ const ControlPanel = ({
         value={isVirtualization}
         label='Toggle virtualization'
         onChange={toggleVirtualization} />
+      {checkedRows.length !== 0 ? (
+        <IconButton size="medium" className='aside' onClick={()=>{
+          removeRows(checkedRows);
+          checkRow([]);
+        }}>
+          <DeleteIcon fontSize="inherit" />
+        </IconButton>
+      ) : null}
+
     </Box>
   )
 }
 
 const mapStateToProps = (state) => {
+  const {filters, columns, isVirtualization, checkedRows} = state;
   return {
-    filters: state.filters,
-    columns: state.columns,
-    isVirtualization: state.isVirtualization
+    filters,
+    columns,
+    isVirtualization,
+    checkedRows
   }
 };
 
-const mapDispatchToProps = {
-  toggleColumn,
-  checkActive,
-  chooseEyeColor,
-  setQueryString,
-  toggleVirtualization,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);
+export default connect(mapStateToProps, actions)(ControlPanel);

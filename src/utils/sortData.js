@@ -32,7 +32,7 @@ const sortData = (sort, data) => {
     (a, b) => {
       let res = 0;
       sort.forEach(el => {
-        const {name, dataType, isSortDirectionToDown: direction} = el;;
+        const {name, dataType, isSortDirectionToDown: direction} = el;
         if (res === 0) res = sortFn(a[name], b[name], dataType, direction);
       })
       return res;

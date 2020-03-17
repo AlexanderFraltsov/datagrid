@@ -18,7 +18,8 @@ const initialState = {
   ],
   dataStore: null,
   isVirtualization: true,
-  checkedRows: []
+  checkedRows: [],
+  removedRows: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -39,6 +40,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         checkedRows: action.payload
+      };
+    case 'REMOVE_ROWS':
+      return {
+        ...state,
+        removedRows: [...state.removedRows, ...action.payload]
       };
     case 'SET_SORT_VALUES':
       return updateSort(state, action.payload);

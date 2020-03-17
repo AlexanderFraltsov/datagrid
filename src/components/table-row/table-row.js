@@ -4,15 +4,10 @@ import { checkRow } from '../../actions';
 
 import {Checkbox} from '@material-ui/core';
 import TableCell from '../table-cell';
-import { getCheckedRows } from '../../utils'
 
-const TableRow = ({row, columns, index, style, checkedRows, checkRow}) => {
+const TableRow = ({row, columns, style, checkedRows, checkRow}) => {
   const {id} = row;
-  const idx = checkedRows.findIndex(el => el === index);
-
-  const tableCells = columns
-    .map(col => row[col.name])
-    .map(cell => <TableCell key={`${id}+${cell}`} content={cell}/>);
+  const idx = checkedRows.findIndex(el => el === id);
 
   let checked = false;
   let clazzCheckbox = 'table--btn';
@@ -25,14 +20,14 @@ const TableRow = ({row, columns, index, style, checkedRows, checkRow}) => {
   }
 
   const handleChange= (e) => {
-    let newCheckedRows = [...checkedRows];
-    if (e.shiftKey) {
-      newCheckedRows = getCheckedRows(newCheckedRows, index);
-    } else {
-      (idx !== -1) ? newCheckedRows.splice(idx, 1) : newCheckedRows.push(index);
-    }
+    const newCheckedRows = [...checkedRows];
+    (idx !== -1) ? newCheckedRows.splice(idx, 1) : newCheckedRows.push(id);
     checkRow(newCheckedRows);
   };
+
+  const tableCells = columns
+    .map(col => row[col.name])
+    .map(cell => <TableCell key={`${id}+${cell}`} content={cell}/>);
 
   return (
     <div key={id} className={clazzRow} style={style} onClick={handleChange}>

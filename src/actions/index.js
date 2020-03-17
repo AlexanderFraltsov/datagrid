@@ -32,6 +32,11 @@ const checkRow = (row) => ({
   payload: row
 });
 
+const removeRows = (rows) => ({
+  type: 'REMOVE_ROWS',
+  payload: rows
+});
+
 export {
   toggleVirtualization,
   checkActive,
@@ -40,5 +45,6 @@ export {
   chooseEyeColor,
   setQueryString,
   toggleColumn,
-  checkRow
+  checkRow,
+  removeRows
 }

@@ -20,19 +20,27 @@ const TableView = ({data, isVirtualization, columns}) => {
     };
   }, []);
 
-  const tableData = data.map((row, index) => <TableRow key={row.id} index={index} row={row} columns={columns}/>);
+  const tableData = data.map((row) => {
+    const {id} = row;
+    return (
+      <TableRow key={id} row={row} columns={columns}/>
+    )
+  });
 
   const Row = ({ index, style }) => {
     const row = data[index];
+    const {id} = row;
     return (
-      <TableRow key={row} index={index} row={row} style={style} columns={columns}/>
+      <TableRow key={id} row={row} style={style} columns={columns}/>
     );
   };
+
+  const arrayOfID = data.map(el => el.id);
 
   return (
     <div className='table'>
       <div className={`sticky-wrapper${isSticky ? ' sticky' : ''}`} ref={ref}>
-        <TableHeader columns={columns} />
+        <TableHeader columns={columns} arrayOfID={arrayOfID}/>
       </div>
       {
         isVirtualization ? (

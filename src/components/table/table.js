@@ -33,7 +33,7 @@ class Table extends Component {
   };
 
   render () {
-    const { data, filters, sort, columns, isVirtualization } = this.props;
+    const { data, filters, sort, columns, isVirtualization, removedRows } = this.props;
     const { loading, error } = this.state;
 
     if (error) {
@@ -45,7 +45,9 @@ class Table extends Component {
     }
 
     const filteredData = filterData(filters, data, columns);
-    const sortedData = sortData(sort, filteredData);
+    const sortedData = sortData(sort, filteredData).filter(el => {
+        return !removedRows.includes(el.id);
+      });
     const visibleCols = columns.filter(column => column.visible);
 
     return (
@@ -55,12 +57,14 @@ class Table extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const { filters, sort, dataStore, columns, isVirtualization, removedRows} = state;
   return {
-    filters: state.filters,
-    sort: state.sort,
-    data: state.dataStore,
-    columns: state.columns,
-    isVirtualization: state.isVirtualization,
+    filters,
+    sort,
+    data: dataStore,
+    columns,
+    isVirtualization,
+    removedRows
   }
 };
 
